@@ -1,0 +1,7 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
+  <rect x='9' y='17' width='36' height='26' rx='3' fill='none' stroke='#283255' stroke-width='4'/>
+  <path d='M11 27h32' stroke='#283255' stroke-width='4' stroke-linecap='round'/>
+  <rect x='33' y='10' width='19' height='11' rx='5.5' fill='#e73a3a'/>
+  <text x='42.5' y='18' text-anchor='middle' font-size='9' font-family='Arial, sans-serif' font-weight='700' fill='#fff'>鐑攢</text>
+</svg>
+

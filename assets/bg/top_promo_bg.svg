@@ -1,0 +1,76 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 250">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff8f7"/>
+      <stop offset="1" stop-color="#ffdfe4"/>
+    </linearGradient>
+    <linearGradient id="roofTop" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffdca0"/>
+      <stop offset="1" stop-color="#ffb462"/>
+    </linearGradient>
+    <linearGradient id="roofMid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff6a63"/>
+      <stop offset="1" stop-color="#e83837"/>
+    </linearGradient>
+    <linearGradient id="pillar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffb2b3"/>
+      <stop offset="1" stop-color="#ff7077"/>
+    </linearGradient>
+    <radialGradient id="centerGlow" cx="50%" cy="48%" r="40%">
+      <stop offset="0" stop-color="#fff8d8" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#ffb1a5" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.2"/>
+    </filter>
+  </defs>
+
+  <rect width="360" height="250" rx="14" fill="url(#bg)"/>
+
+  <!-- fireworks -->
+  <g stroke="#f49aa5" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.9">
+    <path d="M36 86h14M43 79v14M35 78l16 16M35 94l16-16"/>
+    <path d="M303 86h14M310 79v14M302 78l16 16M302 94l16-16"/>
+    <path d="M171 30h10M176 25v10M170 24l12 12M170 36l12-12"/>
+  </g>
+  <circle cx="322" cy="66" r="5" fill="#f8b07f"/>
+
+  <!-- temple body -->
+  <g transform="translate(62,42)">
+    <ellipse cx="118" cy="100" rx="74" ry="56" fill="url(#centerGlow)"/>
+
+    <path d="M6 88h224l-20-23H26z" fill="url(#roofMid)"/>
+    <path d="M18 68h200l-18-24H36z" fill="url(#roofTop)"/>
+    <path d="M36 50h164l-14-18H50z" fill="#ffd399"/>
+
+    <rect x="32" y="90" width="40" height="84" rx="18" fill="url(#pillar)"/>
+    <rect x="164" y="90" width="40" height="84" rx="18" fill="url(#pillar)"/>
+
+    <rect x="78" y="90" width="84" height="88" rx="10" fill="#ffe5c9"/>
+    <rect x="84" y="96" width="72" height="76" rx="8" fill="#fff3de"/>
+
+    <ellipse cx="52" cy="94" rx="12" ry="7" fill="#ff7b7b"/>
+    <ellipse cx="184" cy="94" rx="12" ry="7" fill="#ff7b7b"/>
+
+    <rect x="88" y="176" width="64" height="6" rx="3" fill="#f7dfdf"/>
+    <rect x="82" y="182" width="76" height="6" rx="3" fill="#f1d8d8"/>
+
+    <!-- lions -->
+    <g transform="translate(2,142)">
+      <rect x="0" y="22" width="54" height="18" rx="4" fill="#d7d8df"/>
+      <circle cx="27" cy="18" r="14" fill="#f5f5f5" stroke="#d8d8d8"/>
+      <circle cx="22" cy="16" r="2" fill="#7f7f7f"/><circle cx="32" cy="16" r="2" fill="#7f7f7f"/>
+      <path d="M22 22q5 4 10 0" stroke="#a9a9a9" stroke-width="2" fill="none"/>
+    </g>
+    <g transform="translate(182,142)">
+      <rect x="0" y="22" width="54" height="18" rx="4" fill="#d7d8df"/>
+      <circle cx="27" cy="18" r="14" fill="#f5f5f5" stroke="#d8d8d8"/>
+      <circle cx="22" cy="16" r="2" fill="#7f7f7f"/><circle cx="32" cy="16" r="2" fill="#7f7f7f"/>
+      <path d="M22 22q5 4 10 0" stroke="#a9a9a9" stroke-width="2" fill="none"/>
+    </g>
+  </g>
+
+  <!-- text -->
+  <text x="32" y="212" font-family="sans-serif" font-size="46" font-weight="800" fill="#e11f23">津彩鸿运 福气盈门</text>
+  <text x="90" y="238" font-family="sans-serif" font-size="24" font-weight="700" fill="#e4454c">缤纷活力季 豪礼享不停</text>
+</svg>

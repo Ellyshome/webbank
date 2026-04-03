@@ -1,339 +1,209 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ICBC Mobile</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#c8102e">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>天津银行</title>
+  <meta name="theme-color" content="#2d7ff9" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="icon" href="favicon.ico" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <div class="header-content">
-                <img src="images/icons/logo.png" alt="Logo" class="logo">
-                <div class="search-box">
-                    <img src="images/icons/search.png" alt="Search" class="search-icon">
-                    <span>Search transfer, wealth, bills</span>
-                </div>
-                <img src="images/icons/message.png" alt="Messages" class="msg-icon">
-            </div>
-        </header>
+  <div class="launch-screen" id="launchScreen" aria-hidden="true">
+    <img class="launch-screen-image" src="assets/bg/applaunch.png" alt="启动画面" />
+    <button class="launch-screen-skip" id="launchScreenSkip" type="button" aria-label="跳过启动画面">
+      <svg class="launch-screen-skip-ring" viewBox="0 0 44 44" aria-hidden="true" focusable="false">
+        <circle class="launch-screen-skip-ring-track" cx="22" cy="22" r="18"></circle>
+        <circle class="launch-screen-skip-ring-progress" cx="22" cy="22" r="18"></circle>
+      </svg>
+      <span>跳过</span>
+    </button>
+  </div>
+  <div class="phone">
+    <header class="scroll-header" id="scrollHeader">
+      <div class="scroll-left">
+        <a class="scroll-item" href="fail.html" data-link="fail"><img src="assets/icons/logo.png" alt="" /><span>账户</span></a>
+        <a class="scroll-item" href="fail.html" data-link="fail"><img src="assets/icons/mini_asset.svg" alt="" /><span>资产</span></a>
+        <a class="scroll-item" href="fail.html" data-link="fail"><img src="assets/icons/mini_transfer.svg" alt="" /><span>转账</span></a>
+        <a class="scroll-item" href="fail.html" data-link="fail"><img src="assets/icons/mini_finance.svg" alt="" /><span>理财</span></a>
+      </div>
+      <div class="scroll-right">
+        <a class="scroll-icon" href="fail.html" data-link="fail"><img src="assets/icons/search_dark.svg" alt="" /></a>
+        <a class="scroll-icon" href="fail.html" data-link="fail"><img src="assets/icons/car_dark.svg" alt="" /></a>
+        <a class="scroll-icon" href="fail.html" data-link="fail"><img src="assets/icons/plus_dark.svg" alt="" /></a>
+      </div>
+    </header>
 
-        <section class="banner-section card">
-            <img src="images/banners/newyear_banner.png" alt="Top Banner" class="banner">
-        </section>
+    <section class="top-hero">
+      <header class="top-head">
+        <a class="head-icon" href="fail.html" data-link="fail"><img src="assets/icons/car.svg" alt="" /></a>
+        <a class="hero-search" href="fail.html" data-link="fail">
+          <img class="search-icon" src="assets/icons/search.svg" alt="" />
+          <span class="search-roll" aria-live="polite">
+            <span class="search-roll-track">
+              <span class="search-roll-item">每日申赎</span>
+              <span class="search-roll-item">存期丰富</span>
+              <span class="search-roll-item">小额信贷</span>
+            </span>
+          </span>
+          <img class="mic-icon" src="assets/icons/mic.svg" alt="" />
+        </a>
+        <a class="head-icon plus" href="fail.html" data-link="fail"><img src="assets/icons/plus.svg" alt="" /></a>
+      </header>
 
-        <section class="greeting-section">
-            <span class="greeting">Hello, good afternoon</span>
-        </section>
+      <a class="hero-main" href="fail.html" data-link="fail">
+        <img src="assets/banners/back_login.png" alt="新客见面礼" />
+        <span class="hero-main-copy">
+          <span class="hero-main-kicker">天津银行 App</span>
+          <strong class="hero-main-title">津享新客礼</strong>
+          <strong class="hero-main-title hero-main-title-sub">开户即享三重权益</strong>
+          <span class="hero-main-subtitle">存款 · 理财 · 缴费 一站式礼遇</span>
+          <span class="hero-main-cta">最高享 88 元权益礼包</span>
+        </span>
+        <span class="hero-main-decor" aria-hidden="true">
+          <span class="hero-main-chip hero-main-chip-primary">新客专享</span>
+          <span class="hero-main-chip hero-main-chip-secondary">限时好礼</span>
+          <span class="hero-main-ring hero-main-ring-a"></span>
+          <span class="hero-main-ring hero-main-ring-b"></span>
+          <span class="hero-main-spark hero-main-spark-a"></span>
+          <span class="hero-main-spark hero-main-spark-b"></span>
+        </span>
+      </a>
 
-        <section class="quick-functions card">
-            <div class="section-header">
-                <span class="section-title">Quick Actions</span>
-            </div>
-            <div class="function-row">
-                <div class="function-item">
-                    <div class="function-icon-wrap"><img src="images/icons/func_transfer.png" alt="Transfer" class="function-icon"></div>
-                    <span class="function-name">Transfer</span>
-                </div>
-                <div class="function-item">
-                    <div class="function-icon-wrap"><img src="images/icons/func_bill.png" alt="Bills" class="function-icon"></div>
-                    <span class="function-name">Bills</span>
-                </div>
-                <div class="function-item">
-                    <div class="function-icon-wrap"><img src="images/icons/func_all.png" alt="All" class="function-icon"></div>
-                    <span class="function-name">All</span>
-                </div>
-                <div class="function-item">
-                    <div class="function-icon-wrap"><img src="images/icons/func_debit.png" alt="Debit" class="function-icon"></div>
-                    <span class="function-name">Debit</span>
-                </div>
-            </div>
-            <div class="function-row">
-                <div class="function-item">
-                    <div class="function-icon-wrap"><img src="images/icons/func_credit.png" alt="Credit Card" class="function-icon"></div>
-                    <span class="function-name">Credit</span>
-                </div>
-                <div class="function-item">
-                    <div class="function-icon-wrap"><img src="images/icons/func_exchange.png" alt="FX" class="function-icon"></div>
-                    <span class="function-name">FX</span>
-                </div>
-                <div class="function-item">
-                    <div class="function-icon-wrap"><img src="images/icons/func_loan.png" alt="Loan" class="function-icon"></div>
-                    <span class="function-name">Loan</span>
-                </div>
-                <div class="function-item">
-                    <div class="function-icon-wrap"><img src="images/icons/func_finance.png" alt="Wealth" class="function-icon"></div>
-                    <span class="function-name">Wealth</span>
-                </div>
-            </div>
-            <div class="function-row">
-                <div class="function-item">
-                    <div class="function-icon-wrap"><img src="images/icons/func_precious.png" alt="Precious Metal" class="function-icon"></div>
-                    <span class="function-name">Metal</span>
-                </div>
-                <div class="function-item">
-                    <div class="function-icon-wrap"><img src="images/icons/func_education.png" alt="Education" class="function-icon"></div>
-                    <span class="function-name">Education</span>
-                </div>
-                <div class="function-item">
-                    <div class="function-icon-wrap"><img src="images/icons/func_insurance.png" alt="Insurance" class="function-icon"></div>
-                    <span class="function-name">Insurance</span>
-                </div>
-                <div class="function-item">
-                    <div class="function-icon-wrap"><img src="images/icons/func_more.png" alt="More" class="function-icon"></div>
-                    <span class="function-name">More</span>
-                </div>
-            </div>
-        </section>
+        <div class="hero-cards">
+          <div class="hero-shortcuts card-lite">
+            <a href="fail.html" data-link="fail"><img src="assets/icons/logo.png" alt="" /><span>账户</span></a>
+            <a href="fail.html" data-link="fail"><img src="assets/icons/mini_asset.svg" alt="" /><span>资产</span></a>
+            <a href="fail.html" data-link="fail"><img src="assets/icons/mini_transfer.svg" alt="" /><span>转账</span></a>
+            <a href="fail.html" data-link="fail"><img src="assets/icons/mini_finance.svg" alt="" /><span>理财</span></a>
+          </div>
+          <a class="hero-promo card-lite" href="fail.html" data-link="fail">
+            <img class="promo-bg" src="assets/banners/goot.png" alt="津彩鸿运 福气盈门" />
+            <img class="promo-logo-breathe" src="assets/bg/gold_logo.svg" alt="" />
+          </a>
+        </div>
+      </section>
 
-        <section class="promo-section card">
-            <div class="promo-header section-header">
-                <div class="promo-title">
-                    <span class="promo-tag">Biz Loan</span>
-                    <span class="section-title">SME Credit</span>
-                </div>
-                <div class="section-more">
-                    <span>More</span>
-                    <img src="images/icons/arrow_right.png" alt="More" class="arrow">
-                </div>
-            </div>
-            <div class="promo-card">
-                <div class="promo-rate">
-                    <span class="rate-value">1.88%</span>
-                    <span class="rate-label">APR from</span>
-                </div>
-                <div class="promo-buttons">
-                    <button class="promo-btn primary">Check My Limit</button>
-                    <button class="promo-btn secondary">Learn More</button>
-                </div>
-            </div>
-        </section>
+    <main class="main">
+      <section class="ticker card">
+        <a href="fail.html" data-link="fail"><img src="assets/icons/quick_deposit.svg" alt="" /><span>存款</span></a>
+        <a href="fail.html" data-link="fail"><img src="assets/icons/quick_finance.svg" alt="" /><span>理财</span></a>
+        <a href="fail.html" data-link="fail"><img src="assets/icons/quick_hot.svg" alt="" /><span>热门活动</span></a>
+        <a href="fail.html" data-link="fail"><img src="assets/icons/quick_social.svg" alt="" /><span>社保卡</span></a>
+        <a href="fail.html" data-link="fail"><img src="assets/icons/quick_life_pay.svg" alt="" /><span>生活缴费</span></a>
+        <a href="fail.html" data-link="fail"><img src="assets/icons/quick_cd.svg" alt="" /><span>幸福存单</span></a>
+        <a href="fail.html" data-link="fail"><img src="assets/icons/quick_consumer_loan.svg" alt="" /><span>消费贷</span></a>
+        <a href="fail.html" data-link="fail"><img src="assets/icons/quick_fund_sale.svg" alt="" /><span>代销基金</span></a>
+        <a href="fail.html" data-link="fail"><img src="assets/icons/quick_ecny.svg" alt="" /><span>数字人民币</span></a>
+        <a href="fail.html" data-link="fail"><img src="assets/icons/quick_all.svg" alt="" /><span>全部</span></a>
+      </section>
 
-        <section class="finance-section card">
-            <div class="finance-header section-header">
-                <span class="section-title">Steady Wealth</span>
-                <div class="section-more">
-                    <span>More</span>
-                    <img src="images/icons/arrow_right.png" alt="More" class="arrow">
-                </div>
+      <section class="card block featured-choice">
+        <div class="hd">
+          <h3>天行优选</h3>
+          <a href="fail.html" data-link="fail">更多</a>
+        </div>
+        <div class="choice-grid">
+          <a class="choice-card choice-main" href="fail.html" data-link="fail">
+            <h4>鸿鼎财富-15个月...</h4>
+            <p class="choice-sub">中低风险1万元起购</p>
+            <span class="choice-tag">R2中低风险</span>
+            <div class="choice-main-rate">
+              <strong>3.63%</strong>
+              <span>成立以来年化收益率</span>
             </div>
-            <div class="finance-list">
-                <div class="finance-item">
-                    <div class="finance-name">ICBC Wealth Growth Plan, 90-day holding</div>
-                    <div class="finance-meta">
-                        <div class="finance-rate">
-                            <span class="rate-num">2.91%</span>
-                            <span class="rate-desc">1M annualized</span>
-                        </div>
-                        <div class="finance-tag">Low-Mid Risk</div>
-                    </div>
-                </div>
-                <div class="finance-item">
-                    <div class="finance-name">ICBC Wealth Growth Plan, 65-day holding</div>
-                    <div class="finance-meta">
-                        <div class="finance-rate">
-                            <span class="rate-num">2.50%</span>
-                            <span class="rate-desc">1M annualized</span>
-                        </div>
-                        <div class="finance-tag">Low-Mid Risk</div>
-                    </div>
-                </div>
-                <div class="finance-item">
-                    <div class="finance-name">ICBC Wealth Growth Plan, 30-day holding</div>
-                    <div class="finance-meta">
-                        <div class="finance-rate">
-                            <span class="rate-num">2.30%</span>
-                            <span class="rate-desc">1M annualized</span>
-                        </div>
-                        <div class="finance-tag">Low-Mid Risk</div>
-                    </div>
-                </div>
+            <span class="choice-buy">
+              <span>立即购买</span>
+              <img src="assets/icons/choice_buy_arrow.svg" alt="" />
+            </span>
+          </a>
+          <a class="choice-card choice-side" href="fail.html" data-link="fail">
+            <h4>幸福存单</h4>
+            <strong>1.75%</strong>
+            <div class="choice-side-meta">
+              <span>最高年利率</span>
+              <span>5万元起购</span>
             </div>
-        </section>
+          </a>
+          <a class="choice-card choice-side" href="fail.html" data-link="fail">
+            <h4>海鸥存</h4>
+            <strong>1.60%</strong>
+            <div class="choice-side-meta">
+              <span>最高年利率</span>
+              <span>1万元起购</span>
+            </div>
+          </a>
+        </div>
+        <div class="choice-dots" aria-hidden="true">
+          <span class="active"></span>
+          <span></span>
+        </div>
+      </section>
 
-        <section class="hot-section card">
-            <div class="hot-header section-header">
-                <span class="section-title">Hot Campaigns</span>
-                <div class="section-more">
-                    <span>More</span>
-                    <img src="images/icons/arrow_right.png" alt="More" class="arrow">
-                </div>
-            </div>
-            <div class="hot-grid">
-                <div class="hot-item"><img src="images/products/hot_1.png" alt="Hot Campaign 1" class="hot-img"></div>
-                <div class="hot-item"><img src="images/products/hot_2.png" alt="Hot Campaign 2" class="hot-img"></div>
-            </div>
-        </section>
+      <a class="card banner" href="fail.html" data-link="fail"><img src="assets/banners/mid.svg" alt="banner" /></a>
 
-        <section class="service-section card">
-            <div class="service-header section-header">
-                <span class="section-title">Daily Services</span>
-                <div class="section-more">
-                    <span>More</span>
-                    <img src="images/icons/arrow_right.png" alt="More" class="arrow">
-                </div>
-            </div>
-            <div class="service-grid">
-                <div class="service-item">
-                    <img src="images/icons/service_electric.png" alt="Electricity" class="service-icon">
-                    <span class="service-name">Electric</span>
-                </div>
-                <div class="service-item">
-                    <img src="images/icons/service_water.png" alt="Water" class="service-icon">
-                    <span class="service-name">Water</span>
-                </div>
-                <div class="service-item">
-                    <img src="images/icons/service_gas.png" alt="Gas" class="service-icon">
-                    <span class="service-name">Gas</span>
-                </div>
-                <div class="service-item">
-                    <img src="images/icons/service_phone.png" alt="Mobile" class="service-icon">
-                    <span class="service-name">Mobile</span>
-                </div>
-            </div>
-        </section>
+      <section class="card block">
+        <div class="hd"><h3>理财子公司</h3><a href="fail.html" data-link="fail">更多 <img src="assets/icons/arrow_right.svg" alt="" /></a></div>
+        <div class="double">
+          <a href="fail.html" data-link="fail"><img src="assets/bg/ad_default.png" alt="" /><span>稳健精选</span></a>
+          <a href="fail.html" data-link="fail"><img src="assets/bg/featured_2.png" alt="" /><span>净值专区</span></a>
+        </div>
+      </section>
 
-        <section class="credit-section card">
-            <div class="credit-header section-header">
-                <span class="section-title">Credit Services</span>
-                <div class="section-more">
-                    <span>More</span>
-                    <img src="images/icons/arrow_right.png" alt="More" class="arrow">
-                </div>
-            </div>
-            <div class="credit-cards">
-                <div class="credit-card">
-                    <div class="card-top">
-                        <span class="card-amount">300K</span>
-                        <img src="images/icons/card_credit.png" alt="Credit Card" class="card-icon">
-                    </div>
-                    <div class="card-bottom">Exclusive card limit available now</div>
-                </div>
-                <div class="credit-card">
-                    <div class="card-top">
-                        <span class="card-amount">6M</span>
-                        <img src="images/icons/card_loan.png" alt="Installment" class="card-icon">
-                    </div>
-                    <div class="card-bottom">Home and large purchase installment options</div>
-                </div>
-            </div>
-        </section>
+      <section class="card block">
+        <div class="hd"><h3>增值服务</h3><a href="fail.html" data-link="fail">更多 <img src="assets/icons/arrow_right.svg" alt="" /></a></div>
+        <div class="line-item">
+          <div><p>经营快贷</p><small>最高300万，线上申请</small></div>
+          <button data-link="fail">立即申请</button>
+        </div>
+        <div class="line-item">
+          <div><p>信用卡分期</p><small>笔笔可分，灵活还款</small></div>
+          <button data-link="fail">查看详情</button>
+        </div>
+      </section>
 
-        <section class="featured-section card">
-            <div class="featured-header">
-                <span class="section-title">Featured</span>
-                <div class="featured-tabs">
-                    <span class="tab active">Hot</span>
-                    <span class="tab">Goods</span>
-                    <span class="tab">Life</span>
-                    <span class="tab">ICBC</span>
-                </div>
-            </div>
-            <div class="featured-list">
-                <div class="featured-item"><img src="images/products/featured_1.png" alt="Featured 1" class="featured-img"></div>
-                <div class="featured-item"><img src="images/products/featured_2.png" alt="Featured 2" class="featured-img"></div>
-            </div>
-        </section>
+      <section class="card block">
+        <div class="hd"><h3>生活服务</h3><a href="fail.html" data-link="fail">更多 <img src="assets/icons/arrow_right.svg" alt="" /></a></div>
+        <div class="svc">
+          <a href="fail.html" data-link="fail"><img src="assets/icons/s_electric.svg" alt="" /><span>电费</span></a>
+          <a href="fail.html" data-link="fail"><img src="assets/icons/s_water.svg" alt="" /><span>水费</span></a>
+          <a href="fail.html" data-link="fail"><img src="assets/icons/s_gas.svg" alt="" /><span>燃气</span></a>
+          <a href="fail.html" data-link="fail"><img src="assets/icons/s_phone.svg" alt="" /><span>话费</span></a>
+        </div>
+      </section>
 
-        <section class="security-section card">
-            <div class="security-content">
-                <div class="security-icon-wrap">
-                    <img src="images/icons/security_shield.png" alt="Security" class="security-icon">
-                </div>
-                <div class="security-text">
-                    <div class="security-title">Your funds are protected</div>
-                    <div class="security-desc">AI risk engine monitors unusual login and payment behavior</div>
-                </div>
-            </div>
-        </section>
+      <section class="card security">
+        <img src="assets/icons/security.svg" alt="" />
+        <div><h4>资金安全保障</h4><p>智能风控 7x24 小时守护</p></div>
+      </section>
+    </main>
 
-        <section class="user-info-section card">
-            <div class="user-avatar">
-                <img src="images/icons/user_avatar.png" alt="Avatar" class="avatar-img">
-            </div>
-            <div class="user-detail">
-                <div class="user-name">139****4870</div>
-                <div class="user-id">Premium Client</div>
-            </div>
-            <div class="user-more">
-                <img src="images/icons/arrow_right.png" alt="More" class="arrow">
-            </div>
-        </section>
-
-        <section class="contact-section card">
-            <div class="section-title">Contact Us</div>
-            <div class="contact-grid">
-                <div class="contact-item">
-                    <img src="images/icons/contact_phone.png" alt="Phone" class="contact-icon">
-                    <span class="contact-name">Phone</span>
-                </div>
-                <div class="contact-item">
-                    <img src="images/icons/contact_online.png" alt="Online" class="contact-icon">
-                    <span class="contact-name">Online</span>
-                </div>
-                <div class="contact-item">
-                    <img src="images/icons/contact_message.png" alt="Message" class="contact-icon">
-                    <span class="contact-name">Message</span>
-                </div>
-                <div class="contact-item">
-                    <img src="images/icons/contact_ai.png" alt="Assistant" class="contact-icon">
-                    <span class="contact-name">Assistant</span>
-                </div>
-            </div>
-        </section>
-
-        <section class="lottie-section card">
-            <div class="section-header">
-                <span class="section-title">Motion Effects</span>
-            </div>
-            <div class="lottie-grid">
-                <div class="lottie-item">
-                    <div id="lottie-loading" class="lottie-box"></div>
-                    <div class="lottie-name">Loading</div>
-                </div>
-                <div class="lottie-item">
-                    <div id="lottie-refresh-blue" class="lottie-box"></div>
-                    <div class="lottie-name">Refresh Blue</div>
-                </div>
-                <div class="lottie-item">
-                    <div id="lottie-refresh-white" class="lottie-box soft-bg"></div>
-                    <div class="lottie-name">Refresh White</div>
-                </div>
-            </div>
-        </section>
-
-        <footer class="bottom-nav">
-            <div class="nav-item active">
-                <img src="images/icons/nav_home.png" alt="Home" class="nav-icon">
-                <span class="nav-name">Home</span>
-            </div>
-            <div class="nav-item">
-                <img src="images/icons/nav_wealth.png" alt="Wealth" class="nav-icon">
-                <span class="nav-name">Wealth</span>
-            </div>
-            <div class="nav-item">
-                <img src="images/icons/nav_life.png" alt="Life" class="nav-icon">
-                <span class="nav-name">Life</span>
-            </div>
-            <div class="nav-item">
-                <img src="images/icons/nav_user.png" alt="Profile" class="nav-icon">
-                <span class="nav-name">Profile</span>
-            </div>
-        </footer>
-    </div>
-
-    <div id="install-banner" class="install-banner">
-        <p>Install this app for a faster mobile experience</p>
-        <button id="install-btn" class="install-btn">Install</button>
-        <button id="close-install" class="close-install">Later</button>
-    </div>
-
-    <script src="script.js"></script>
+    <nav class="tabbar">
+      <a class="tab active" href="index.html" data-link="home">
+        <img src="assets/icons/nav_home_active.svg" data-icon-active="assets/icons/nav_home_active.svg" data-icon-inactive="assets/icons/nav_home_inactive.svg" alt="" />
+        <span>首页</span>
+      </a>
+      <a class="tab" href="fail.html" data-link="fail">
+        <img src="assets/icons/nav_wealth_inactive.svg" data-icon-active="assets/icons/nav_wealth_active.svg" data-icon-inactive="assets/icons/nav_wealth_inactive.svg" alt="" />
+        <span>财富</span>
+      </a>
+      <a class="tab pay" href="fail.html" data-link="fail">
+        <img src="assets/icons/nav_pay_inactive.svg" data-icon-active="assets/icons/nav_pay_active.svg" data-icon-inactive="assets/icons/nav_pay_inactive.svg" alt="" />
+        <span>收付款</span>
+      </a>
+      <a class="tab" href="fail.html" data-link="fail">
+        <img src="assets/icons/nav_life_inactive.svg" data-icon-active="assets/icons/nav_life_active.svg" data-icon-inactive="assets/icons/nav_life_inactive.svg" alt="" />
+        <span>生活</span>
+      </a>
+      <a class="tab" href="mine.html" data-link="mine">
+        <img src="assets/icons/nav_mine_inactive.svg" data-icon-active="assets/icons/nav_mine_active.svg" data-icon-inactive="assets/icons/nav_mine_inactive.svg" alt="" />
+        <span>我的</span>
+      </a>
+    </nav>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>

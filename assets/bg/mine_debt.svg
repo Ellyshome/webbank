@@ -1,0 +1,9 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 120">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#73a6ff"/><stop offset="1" stop-color="#4b7ff6"/></linearGradient>
+  </defs>
+  <rect width="320" height="120" rx="14" fill="url(#g)"/>
+  <text x="24" y="48" font-size="24" font-family="sans-serif" fill="#fff" font-weight="700">个人消费贷款</text>
+  <text x="24" y="80" font-size="18" font-family="sans-serif" fill="#dceaff">在线申请｜审批快｜额度高</text>
+  <circle cx="266" cy="36" r="20" fill="#ffffff33"/><circle cx="286" cy="56" r="16" fill="#ffffff33"/>
+</svg>
