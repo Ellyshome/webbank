@@ -333,6 +333,43 @@
     skip.addEventListener('click', close);
   };
 
+  const initAssetAmountInput = () => {
+    const input = document.getElementById('assetAmountInput');
+    const submitBtn = document.getElementById('assetAmountSubmit');
+    if (!input || !submitBtn) return;
+
+    submitBtn.addEventListener('click', () => {
+      const inputValue = input.value.trim();
+      const amount = parseFloat(inputValue);
+
+      if (isNaN(amount) || amount < 0) {
+        alert('请输入有效的金额数字');
+        return;
+      }
+
+      const assetValueNodes = document.querySelectorAll('.asset-value-open.asset-value-number');
+      assetValueNodes.forEach(node => {
+        const prefix = node.dataset.prefix || '';
+        const decimals = parseInt(node.dataset.decimals || '2', 10) || 2;
+        const formattedValue = amount.toLocaleString('en-US', {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals
+        });
+        node.textContent = `${prefix}${formattedValue}`;
+        node.dataset.value = amount.toFixed(decimals);
+      });
+
+      input.value = '';
+      alert('已更新');
+    });
+
+    input.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        submitBtn.click();
+      }
+    });
+  };
+
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(() => {}));
   }
@@ -344,6 +381,7 @@
   initRecoCarousel();
   syncTabbarIcons();
   initLaunchScreen();
+  initAssetAmountInput();
 
   document.addEventListener('click', (e) => {
     const target = e.target.closest('[data-link]');
