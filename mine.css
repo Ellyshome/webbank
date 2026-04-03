@@ -19,7 +19,7 @@ body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg)
   top:0;
   z-index:10;
   margin-bottom:0;
-  padding:calc(7px + env(safe-area-inset-top)) 12px 8px;
+  padding:calc(8px + env(safe-area-inset-top)) clamp(8px,2.4vw,12px) 12px;
   background:linear-gradient(180deg,rgba(255,255,255,.99),rgba(255,255,255,.96));
   border-bottom:1px solid rgba(229,234,241,.88);
   box-shadow:0 2px 10px rgba(33,56,99,.035);
@@ -28,98 +28,88 @@ body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg)
   gap:8px;
 }
 .mine-top .head-icon{
-  width:30px;
-  height:30px;
+  width:36px;
+  height:36px;
   display:grid;
   place-items:center;
   text-decoration:none;
   flex:0 0 auto;
 }
 .mine-top .head-icon img{
-  width:22px;
-  height:22px;
+  width:25.5px;
+  height:25.5px;
   display:block;
-  opacity:.88;
+  filter:none;
 }
 .mine-top .head-icon.plus{
-  width:28px;
-  height:28px;
+  width:36px;
+  height:36px;
   border-radius:0;
   border:0;
 }
-.mine-search{
-  --hero-search-height:32px;
-  --hero-search-radius:16px;
-  --hero-search-border:.8px;
-  --hero-search-icon-size:14px;
-  --hero-search-font:11px;
-  --hero-search-gap:6px;
-  --hero-search-padding-x:10px;
-  color:#66748d;
-  background:linear-gradient(180deg,#fbfcfe,#f4f7fb);
-  border-color:rgba(196,207,221,.72);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.92);
+.mine-top .head-icon.plus img{
+  width:25.5px;
+  height:25.5px;
+}
+.hero-search{
+  --hero-search-height:35px;
+  --hero-search-radius:24px;
+  --hero-search-border:1.2px;
+  --hero-search-icon-size:21px;
+  --hero-search-font:16.5px;
+  --hero-search-gap:9px;
+  --hero-search-padding-x:15px;
   flex:1;
   height:var(--hero-search-height);
   border-radius:var(--hero-search-radius);
   border:var(--hero-search-border) solid rgba(196,207,221,.72);
+  background:linear-gradient(180deg,#fbfcfe,#f4f7fb);
   display:flex;
   align-items:center;
   gap:var(--hero-search-gap);
   padding:0 var(--hero-search-padding-x);
+  color:#66748d;
   text-decoration:none;
-  position:relative;
-  overflow:visible;
+  overflow:hidden;
   font-size:var(--hero-search-font);
   min-width:0;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.92);
 }
-.mine-search .search-icon,
-.mine-search .mic-icon{
+.hero-search .search-icon,
+.hero-search .mic-icon{
   width:var(--hero-search-icon-size);
   height:var(--hero-search-icon-size);
   filter:none;
   display:block;
 }
-.mine-search span{
-  flex:1;
-  min-width:0;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-.mine-search .mic-icon{
+.hero-search .mic-icon{
   margin-left:auto;
   opacity:.56;
 }
+.search-roll{
+  height:18px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  flex:1;
+  min-width:0;
+}
+.search-roll-track{
+  display:flex;
+  flex-direction:column;
+  will-change:transform;
+}
+.search-roll-item{
+  height:18px;
+  line-height:18px;
+  white-space:nowrap;
+}
 .mine-top,
-.mine-search,
+.hero-search,
 .mine-top .head-icon,
 .mine-top .head-icon img{
   -webkit-text-size-adjust:100%;
   text-size-adjust:100%;
-}
-.mine-plus img{
-  filter:none;
-}
-.mine-search.is-hot::after{
-  content:"热销";
-  position:absolute;
-  top:0;
-  right:0;
-  transform:translate(34%,-36%);
-  min-width:calc(42px * .78);
-  padding:calc(4px * .7) calc(10px * .7);
-  border-radius:999px;
-  background:#ea4b4b;
-  color:#fff;
-  font-size:9px;
-  line-height:1;
-  font-weight:700;
-  text-align:center;
-  white-space:nowrap;
-  box-shadow:0 6px 14px rgba(234,75,75,.28);
-  transform-origin:center;
-  animation:hotBadgeBreathe 1.8s ease-in-out infinite;
 }
 .mine-main{padding:var(--page-gap);display:grid;gap:var(--page-gap)}
 .card{background:#fff;border-radius:10px;box-shadow:0 4px 14px rgba(24,40,76,.06)}
@@ -415,7 +405,7 @@ body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg)
 .tab.active{color:var(--tab-active)}
 .tab.pay img{width:var(--tabbar-icon-size);height:var(--tabbar-icon-size)}
 
-@media (max-width:430px){
+/* @media (max-width:430px){
   .asset-panel{padding:12px 10px 8px}
   .asset-gauge{min-height:178px}
   .asset-arc{width:min(100%,220px)}
@@ -425,18 +415,20 @@ body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg)
   .asset-item-copy .asset-item-value{font-size:11.5px}
   .user-panel{grid-template-columns:1fr}
   .mine-top{
-    padding:calc(6px + env(safe-area-inset-top)) 8px 7px;
-    gap:7px;
+    padding:calc(8px + env(safe-area-inset-top)) 8px 12px;
+    gap:10.5px;
   }
-  .mine-top .head-icon{width:22px;height:22px}
-  .mine-top .head-icon img{width:16px;height:16px}
-  .mine-search{
-    --hero-search-height:30px;
-    --hero-search-radius:15px;
-    --hero-search-icon-size:13px;
-    --hero-search-font:10.5px;
-    --hero-search-gap:5px;
-    --hero-search-padding-x:8px;
+  .mine-top .head-icon{width:33px;height:33px}
+  .mine-top .head-icon img{width:24px;height:24px}
+  .hero-search{
+    --hero-search-height:35px;
+    --hero-search-radius:22.5px;
+    --hero-search-icon-size:19.5px;
+    --hero-search-font:15.75px;
+    --hero-search-gap:7.5px;
+    --hero-search-padding-x:12px;
+    font-size:var(--hero-search-font);
+    padding:0 var(--hero-search-padding-x);
   }
   .entry a.is-hot::after{top:-6px;right:-2px}
   .reco-layer{grid-template-columns:1fr;padding-bottom:56px}
@@ -448,4 +440,4 @@ body{font-family:"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg)
   .debt-row a{align-self:flex-end;width:min(100%,220px)}
   .debt-row a img{width:100%}
   .actions{grid-template-columns:1fr}
-}
+} */

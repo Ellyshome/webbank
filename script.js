@@ -53,7 +53,7 @@
     const totalAssetConfig = numberConfigs.find((config) => config.node.closest('.asset-total-value')) || numberConfigs[0] || null;
     const incomeConfig = incomeNode ? {
       node: incomeNode,
-      value: totalAssetConfig ? totalAssetConfig.value * (Number.parseFloat(incomeNode.dataset.rate || '0') || 0) / (Number.parseFloat(incomeNode.dataset.days || '365') || 365) : 0,
+      value: 210.77, // 固定值
       decimals: Number.parseInt(incomeNode.dataset.decimals || '2', 10) || 2,
       prefix: incomeNode.dataset.prefix || '',
       suffix: incomeNode.dataset.suffix || ''

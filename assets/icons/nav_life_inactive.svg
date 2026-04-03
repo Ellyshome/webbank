@@ -1,1 +1,8 @@
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M20 34c0-10 7-17 16-19 0 10-7 17-16 19z' fill='#9ca6b5'/><path d='M44 34c0-10-7-17-16-19 0 10 7 17 16 19z' fill='#9ca6b5'/><path d='M32 30v14' stroke='#fff' stroke-width='4' stroke-linecap='round'/><path d='M22 46h20l-3 8H25z' fill='#9ca6b5'/></svg>
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'>
+  <path
+    d='M20 22h24l4 28H16zm8 0c0-4 1.8-8 4-8s4 4 4 8h-4c0-2.2-.9-4-2-4s-2 1.8-2 4z'
+    fill='#9ca6b5'
+    fill-rule='evenodd'
+    clip-rule='evenodd'
+  />
+</svg>
