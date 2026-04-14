@@ -198,46 +198,9 @@
 
     const animateOpen = () => {
       render(true);
-      
-      // 重新读取最新的资产数值
-      const updatedNumberNodes = Array.from(section?.querySelectorAll('.asset-value-number') || []);
-      const updatedIncomeNode = section?.querySelector('.asset-income-number');
-      
-      const updatedNumberConfigs = updatedNumberNodes.map((node) => ({
-        node,
-        value: Number.parseFloat(node.dataset.value || '0') || 0,
-        decimals: Number.parseInt(node.dataset.decimals || '0', 10) || 0,
-        prefix: node.dataset.prefix || '',
-        suffix: node.dataset.suffix || ''
-      }));
-      
-      const updatedTotalAssetConfig = updatedNumberConfigs.find((config) => config.node.closest('.asset-total-value')) || updatedNumberConfigs[0] || null;
-      
-      const updatedIncomeConfig = updatedIncomeNode ? {
-        node: updatedIncomeNode,
-        value: parseFloat(updatedIncomeNode.textContent) || 0,
-        decimals: Number.parseInt(updatedIncomeNode.dataset.decimals || '2', 10) || 2,
-        prefix: updatedIncomeNode.dataset.prefix || '',
-        suffix: updatedIncomeNode.dataset.suffix || ''
-      } : null;
-      
-      // 更新进度函数使用最新的配置
-      const updatedSetNumberProgress = (progress) => {
-        const clamped = Math.max(0, Math.min(1, progress));
-        updatedNumberConfigs.forEach((config) => {
-          config.node.textContent = formatNumber(config.value * clamped, config);
-        });
-      };
-      
-      const updatedSetIncomeProgress = (progress) => {
-        if (!updatedIncomeConfig) return;
-        const clamped = Math.max(0, Math.min(1, progress));
-        updatedIncomeConfig.node.textContent = formatNumber(updatedIncomeConfig.value * clamped, updatedIncomeConfig);
-      };
-      
       setArcProgress(0);
-      updatedSetNumberProgress(0);
-      updatedSetIncomeProgress(0);
+      setNumberProgress(0);
+      setIncomeProgress(0);
 
       frameId = requestAnimationFrame(() => {
         section.classList.add('is-animating');
@@ -249,8 +212,8 @@
           const eased = 1 - Math.pow(1 - progress, 3);
 
           setArcProgress(eased);
-          updatedSetNumberProgress(eased);
-          updatedSetIncomeProgress(eased);
+          setNumberProgress(eased);
+          setIncomeProgress(eased);
 
           if (progress < 1) {
             frameId = requestAnimationFrame(tick);
@@ -258,8 +221,8 @@
           }
 
           setArcProgress(1);
-          updatedSetNumberProgress(1);
-          updatedSetIncomeProgress(1);
+          setNumberProgress(1);
+          setIncomeProgress(1);
           frameId = 0;
         };
 
@@ -287,9 +250,6 @@
         hasPassedGestureVerification = true;
       }
 
-      // 重新读取文件m获取最新数据
-      await loadFinanceAssetData();
-      
       animateOpen();
     });
   };
@@ -523,8 +483,8 @@
   initLaunchScreen();
   initAssetAmountInput();
 
-  // 计算日收益
-  const calculateDailyIncome = () => {
+  // 计算日收益并更新
+  const updateDailyIncome = () => {
     // 找到总资产元素
     const totalAssetElement = document.querySelector('.asset-total-value .asset-value-number');
     // 找到日收益元素
@@ -543,76 +503,21 @@
       const suffix = incomeElement.dataset.suffix || '';
       // 格式化日收益
       const formattedIncome = dailyIncome.toFixed(decimals);
+      
+      // 更新incomeConfig的value以确保动画正确
+      if (incomeConfig) {
+        incomeConfig.value = dailyIncome;
+      }
+      
       // 更新日收益元素
       incomeElement.textContent = `${formattedIncome}${suffix}`;
     }
   };
 
-  // 从文件m中读取理财资产数据
-  const loadFinanceAssetData = () => {
-    fetch('./m')
-      .then(response => response.text())
-      .then(data => {
-        const financeAssetElement = document.querySelector('.asset-item-finance .asset-value-number');
-        if (financeAssetElement) {
-          financeAssetElement.dataset.value = data;
-          const prefix = financeAssetElement.dataset.prefix || '';
-          const decimals = parseInt(financeAssetElement.dataset.decimals || '2', 10) || 2;
-          const formattedValue = parseFloat(data).toLocaleString('en-US', {
-            minimumFractionDigits: decimals,
-            maximumFractionDigits: decimals
-          });
-          financeAssetElement.textContent = `${prefix}${formattedValue}`;
-          
-          // 计算并更新总资产
-          updateTotalAsset();
-        }
-      })
-      .catch(error => {
-        console.error('加载理财资产数据失败:', error);
-      });
-  };
-
-  // 更新总资产
-  const updateTotalAsset = () => {
-    // 找到所有资产项
-    const assetItems = document.querySelectorAll('.asset-item .asset-value-number');
-    let total = 0;
-    
-    assetItems.forEach(item => {
-      const value = parseFloat(item.dataset.value) || 0;
-      total += value;
-    });
-    
-    // 更新总资产元素
-    const totalAssetElement = document.querySelector('.asset-total-value .asset-value-number');
-    if (totalAssetElement) {
-      totalAssetElement.dataset.value = total;
-      const prefix = totalAssetElement.dataset.prefix || '';
-      const decimals = parseInt(totalAssetElement.dataset.decimals || '2', 10) || 2;
-      const formattedValue = total.toLocaleString('en-US', {
-        minimumFractionDigits: decimals,
-        maximumFractionDigits: decimals
-      });
-      totalAssetElement.textContent = `${prefix}${formattedValue}`;
-      
-      // 计算日收益
-      calculateDailyIncome();
-    }
-  };
-
   // 确保DOM完全加载后再执行
   document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM完全加载，开始执行脚本...');
-    
-    // 延迟一点时间执行，确保所有元素都已渲染
-    setTimeout(() => {
-      // 从文件m中读取理财资产数据
-      loadFinanceAssetData();
-      
-      // 初始化时计算日收益
-      calculateDailyIncome();
-    }, 100);
+    // 初始化时计算日收益
+    updateDailyIncome();
   });
 
   document.addEventListener('click', (e) => {
