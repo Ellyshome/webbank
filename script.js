@@ -196,7 +196,82 @@
       }
     };
 
+    // 计算总资产
+    const calculateTotalAsset = () => {
+      // 找到理财资产元素
+      const financeAssetElement = document.querySelector('.asset-item-finance .asset-value-number');
+      // 找到存款元素
+      const depositAssetElement = document.querySelector('.asset-item-deposit .asset-value-number');
+      // 找到总资产元素
+      const totalAssetElement = document.querySelector('.asset-total-value .asset-value-number');
+      
+      if (financeAssetElement && depositAssetElement && totalAssetElement) {
+        // 获取理财资产数值
+        const financeAsset = parseFloat(financeAssetElement.dataset.value) || 0;
+        // 获取存款数值
+        const depositAsset = parseFloat(depositAssetElement.dataset.value) || 0;
+        // 计算总资产
+        const totalAsset = financeAsset + depositAsset;
+        // 获取小数位数
+        const decimals = parseInt(totalAssetElement.dataset.decimals || '2', 10) || 2;
+        // 获取前缀
+        const prefix = totalAssetElement.dataset.prefix || '';
+        // 格式化总资产
+        const formattedTotal = totalAsset.toLocaleString('en-US', {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals
+        });
+        
+        // 更新总资产元素
+        totalAssetElement.dataset.value = totalAsset;
+        totalAssetElement.textContent = `${prefix}${formattedTotal}`;
+        
+        // 更新numberConfigs中的总资产配置
+        const totalAssetConfig = numberConfigs.find((config) => config.node.closest('.asset-total-value'));
+        if (totalAssetConfig) {
+          totalAssetConfig.value = totalAsset;
+        }
+        
+        return totalAsset;
+      }
+      
+      return 0;
+    };
+
+    // 计算日收益并更新
+    const updateDailyIncome = () => {
+      // 先计算总资产
+      const totalAsset = calculateTotalAsset();
+      // 找到日收益元素
+      const incomeElement = document.querySelector('.asset-income-number');
+      
+      if (incomeElement) {
+        // 年化利率3.1%
+        const annualRate = 0.031;
+        // 计算日收益 = 总资产 × 年化利率 ÷ 365
+        const dailyIncome = totalAsset * annualRate / 365;
+        // 获取小数位数
+        const decimals = parseInt(incomeElement.dataset.decimals || '2', 10) || 2;
+        // 获取后缀
+        const suffix = incomeElement.dataset.suffix || '';
+        // 格式化日收益
+        const formattedIncome = dailyIncome.toFixed(decimals);
+        
+        // 更新incomeConfig的value以确保动画正确
+        if (incomeConfig) {
+          incomeConfig.value = dailyIncome;
+        }
+        
+        // 更新日收益元素
+        incomeElement.textContent = `${formattedIncome}${suffix}`;
+      }
+    };
+
     const animateOpen = () => {
+      // 先计算总资产和日收益
+      calculateTotalAsset();
+      updateDailyIncome();
+      
       render(true);
       setArcProgress(0);
       setNumberProgress(0);
@@ -229,6 +304,9 @@
         frameId = requestAnimationFrame(tick);
       });
     };
+
+    // 初始化时计算日收益
+    updateDailyIncome();
 
     render(false);
     btn.addEventListener('click', async (e) => {
@@ -482,43 +560,6 @@
   syncTabbarIcons();
   initLaunchScreen();
   initAssetAmountInput();
-
-  // 计算日收益并更新
-  const updateDailyIncome = () => {
-    // 找到总资产元素
-    const totalAssetElement = document.querySelector('.asset-total-value .asset-value-number');
-    // 找到日收益元素
-    const incomeElement = document.querySelector('.asset-income-number');
-    
-    if (totalAssetElement && incomeElement) {
-      // 获取总资产数值
-      const totalAsset = parseFloat(totalAssetElement.dataset.value) || 0;
-      // 年化利率3.1%
-      const annualRate = 0.031;
-      // 计算日收益 = 总资产 × 年化利率 ÷ 365
-      const dailyIncome = totalAsset * annualRate / 365;
-      // 获取小数位数
-      const decimals = parseInt(incomeElement.dataset.decimals || '2', 10) || 2;
-      // 获取后缀
-      const suffix = incomeElement.dataset.suffix || '';
-      // 格式化日收益
-      const formattedIncome = dailyIncome.toFixed(decimals);
-      
-      // 更新incomeConfig的value以确保动画正确
-      if (incomeConfig) {
-        incomeConfig.value = dailyIncome;
-      }
-      
-      // 更新日收益元素
-      incomeElement.textContent = `${formattedIncome}${suffix}`;
-    }
-  };
-
-  // 确保DOM完全加载后再执行
-  document.addEventListener('DOMContentLoaded', () => {
-    // 初始化时计算日收益
-    updateDailyIncome();
-  });
 
   document.addEventListener('click', (e) => {
     const target = e.target.closest('[data-link]');
