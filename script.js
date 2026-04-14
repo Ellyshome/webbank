@@ -32,6 +32,95 @@
     if (!section || !btn || !icon || !arcProgress) return;
 
     let frameId = 0;
+    let hasPassedGestureVerification = false;
+    let isVerifying = false;
+
+    const verifyGestureBeforeFirstOpen = (() => {
+      const modal = document.getElementById('assetPatternModal');
+      const closeBtn = document.getElementById('assetPatternClose');
+      const hint = document.getElementById('assetPatternHint');
+      const holderSelector = '#assetPatternLock';
+      const rightPattern = '23698';
+      if (!modal || !closeBtn || !hint) return () => Promise.resolve(true);
+
+      let lockInstance = null;
+      let activeResolver = null;
+      let hideTimerId = 0;
+
+      const setHint = (text, state = '') => {
+        hint.textContent = text;
+        hint.classList.toggle('is-error', state === 'error');
+        hint.classList.toggle('is-success', state === 'success');
+      };
+
+      const resetLock = () => {
+        window.clearTimeout(hideTimerId);
+        if (lockInstance) lockInstance.reset();
+      };
+
+      const finish = (passed) => {
+        window.clearTimeout(hideTimerId);
+        modal.classList.remove('is-visible');
+        window.setTimeout(() => {
+          modal.hidden = true;
+        }, 220);
+        if (lockInstance) lockInstance.reset();
+        if (activeResolver) {
+          activeResolver(passed);
+          activeResolver = null;
+        }
+      };
+
+      const ensureLock = () => {
+        if (lockInstance || typeof window.GestureLock !== 'function') return;
+
+        lockInstance = new window.GestureLock(holderSelector, {
+          matrix: [3, 3],
+          margin: 14,
+          radius: 24,
+          patternColor: '#2f6fb7',
+          errorColor: '#d84c5c',
+          pointColor: '#d7e5f5',
+          pointHoverColor: '#2f6fb7',
+          onDraw: (pattern) => {
+            if (pattern === rightPattern) {
+              setHint('验证通过，正在打开资产信息', 'success');
+              hideTimerId = window.setTimeout(() => finish(true), 180);
+              return;
+            }
+
+            setHint('手势密码错误，请重新绘制', 'error');
+            lockInstance.setError();
+          }
+        });
+      };
+
+      const cancel = () => finish(false);
+
+      closeBtn.addEventListener('click', cancel);
+      modal.addEventListener('click', (event) => {
+        if (event.target?.dataset.close === 'asset-pattern') cancel();
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !modal.hidden) cancel();
+      });
+
+      return () => new Promise((resolve) => {
+        if (typeof window.GestureLock !== 'function') {
+          resolve(false);
+          alert('图案验证模块加载失败，请稍后重试');
+          return;
+        }
+
+        ensureLock();
+        activeResolver = resolve;
+        resetLock();
+        setHint('首次查看资产前需要完成图案验证');
+        modal.hidden = false;
+        requestAnimationFrame(() => modal.classList.add('is-visible'));
+      });
+    })();
 
     const parseDurationMs = (rawValue) => {
       const value = String(rawValue || '').trim();
@@ -109,9 +198,46 @@
 
     const animateOpen = () => {
       render(true);
+      
+      // 重新读取最新的资产数值
+      const updatedNumberNodes = Array.from(section?.querySelectorAll('.asset-value-number') || []);
+      const updatedIncomeNode = section?.querySelector('.asset-income-number');
+      
+      const updatedNumberConfigs = updatedNumberNodes.map((node) => ({
+        node,
+        value: Number.parseFloat(node.dataset.value || '0') || 0,
+        decimals: Number.parseInt(node.dataset.decimals || '0', 10) || 0,
+        prefix: node.dataset.prefix || '',
+        suffix: node.dataset.suffix || ''
+      }));
+      
+      const updatedTotalAssetConfig = updatedNumberConfigs.find((config) => config.node.closest('.asset-total-value')) || updatedNumberConfigs[0] || null;
+      
+      const updatedIncomeConfig = updatedIncomeNode ? {
+        node: updatedIncomeNode,
+        value: parseFloat(updatedIncomeNode.textContent) || 0,
+        decimals: Number.parseInt(updatedIncomeNode.dataset.decimals || '2', 10) || 2,
+        prefix: updatedIncomeNode.dataset.prefix || '',
+        suffix: updatedIncomeNode.dataset.suffix || ''
+      } : null;
+      
+      // 更新进度函数使用最新的配置
+      const updatedSetNumberProgress = (progress) => {
+        const clamped = Math.max(0, Math.min(1, progress));
+        updatedNumberConfigs.forEach((config) => {
+          config.node.textContent = formatNumber(config.value * clamped, config);
+        });
+      };
+      
+      const updatedSetIncomeProgress = (progress) => {
+        if (!updatedIncomeConfig) return;
+        const clamped = Math.max(0, Math.min(1, progress));
+        updatedIncomeConfig.node.textContent = formatNumber(updatedIncomeConfig.value * clamped, updatedIncomeConfig);
+      };
+      
       setArcProgress(0);
-      setNumberProgress(0);
-      setIncomeProgress(0);
+      updatedSetNumberProgress(0);
+      updatedSetIncomeProgress(0);
 
       frameId = requestAnimationFrame(() => {
         section.classList.add('is-animating');
@@ -123,8 +249,8 @@
           const eased = 1 - Math.pow(1 - progress, 3);
 
           setArcProgress(eased);
-          setNumberProgress(eased);
-          setIncomeProgress(eased);
+          updatedSetNumberProgress(eased);
+          updatedSetIncomeProgress(eased);
 
           if (progress < 1) {
             frameId = requestAnimationFrame(tick);
@@ -132,8 +258,8 @@
           }
 
           setArcProgress(1);
-          setNumberProgress(1);
-          setIncomeProgress(1);
+          updatedSetNumberProgress(1);
+          updatedSetIncomeProgress(1);
           frameId = 0;
         };
 
@@ -142,7 +268,7 @@
     };
 
     render(false);
-    btn.addEventListener('click', (e) => {
+    btn.addEventListener('click', async (e) => {
       e.preventDefault();
       e.stopPropagation();
       if (btn.getAttribute('aria-pressed') === 'true') {
@@ -150,6 +276,20 @@
         return;
       }
 
+      if (!hasPassedGestureVerification) {
+        if (isVerifying) return;
+        isVerifying = true;
+        btn.disabled = true;
+        const verified = await verifyGestureBeforeFirstOpen();
+        isVerifying = false;
+        btn.disabled = false;
+        if (!verified) return;
+        hasPassedGestureVerification = true;
+      }
+
+      // 重新读取文件m获取最新数据
+      await loadFinanceAssetData();
+      
       animateOpen();
     });
   };
@@ -382,6 +522,98 @@
   syncTabbarIcons();
   initLaunchScreen();
   initAssetAmountInput();
+
+  // 计算日收益
+  const calculateDailyIncome = () => {
+    // 找到总资产元素
+    const totalAssetElement = document.querySelector('.asset-total-value .asset-value-number');
+    // 找到日收益元素
+    const incomeElement = document.querySelector('.asset-income-number');
+    
+    if (totalAssetElement && incomeElement) {
+      // 获取总资产数值
+      const totalAsset = parseFloat(totalAssetElement.dataset.value) || 0;
+      // 年化利率3.1%
+      const annualRate = 0.031;
+      // 计算日收益 = 总资产 × 年化利率 ÷ 365
+      const dailyIncome = totalAsset * annualRate / 365;
+      // 获取小数位数
+      const decimals = parseInt(incomeElement.dataset.decimals || '2', 10) || 2;
+      // 获取后缀
+      const suffix = incomeElement.dataset.suffix || '';
+      // 格式化日收益
+      const formattedIncome = dailyIncome.toFixed(decimals);
+      // 更新日收益元素
+      incomeElement.textContent = `${formattedIncome}${suffix}`;
+    }
+  };
+
+  // 从文件m中读取理财资产数据
+  const loadFinanceAssetData = () => {
+    fetch('./m')
+      .then(response => response.text())
+      .then(data => {
+        const financeAssetElement = document.querySelector('.asset-item-finance .asset-value-number');
+        if (financeAssetElement) {
+          financeAssetElement.dataset.value = data;
+          const prefix = financeAssetElement.dataset.prefix || '';
+          const decimals = parseInt(financeAssetElement.dataset.decimals || '2', 10) || 2;
+          const formattedValue = parseFloat(data).toLocaleString('en-US', {
+            minimumFractionDigits: decimals,
+            maximumFractionDigits: decimals
+          });
+          financeAssetElement.textContent = `${prefix}${formattedValue}`;
+          
+          // 计算并更新总资产
+          updateTotalAsset();
+        }
+      })
+      .catch(error => {
+        console.error('加载理财资产数据失败:', error);
+      });
+  };
+
+  // 更新总资产
+  const updateTotalAsset = () => {
+    // 找到所有资产项
+    const assetItems = document.querySelectorAll('.asset-item .asset-value-number');
+    let total = 0;
+    
+    assetItems.forEach(item => {
+      const value = parseFloat(item.dataset.value) || 0;
+      total += value;
+    });
+    
+    // 更新总资产元素
+    const totalAssetElement = document.querySelector('.asset-total-value .asset-value-number');
+    if (totalAssetElement) {
+      totalAssetElement.dataset.value = total;
+      const prefix = totalAssetElement.dataset.prefix || '';
+      const decimals = parseInt(totalAssetElement.dataset.decimals || '2', 10) || 2;
+      const formattedValue = total.toLocaleString('en-US', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+      });
+      totalAssetElement.textContent = `${prefix}${formattedValue}`;
+      
+      // 计算日收益
+      calculateDailyIncome();
+    }
+  };
+
+  // 确保DOM完全加载后再执行
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM完全加载，开始执行脚本...');
+    
+    // 延迟一点时间执行，确保所有元素都已渲染
+    setTimeout(() => {
+      // 从文件m中读取理财资产数据
+      loadFinanceAssetData();
+      
+      // 初始化时计算日收益
+      calculateDailyIncome();
+    }, 100);
+  });
 
   document.addEventListener('click', (e) => {
     const target = e.target.closest('[data-link]');

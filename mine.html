@@ -6,6 +6,7 @@
   <title>我的 - 天津银行</title>
   <meta name="theme-color" content="#ffffff" />
   <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="assets/vendor/gesture-lock/gesture-lock.css" />
   <link rel="stylesheet" href="mine.css" />
 </head>
 <body>
@@ -283,6 +284,17 @@
       </a>
     </nav>
   </div>
+  <div id="assetPatternModal" class="asset-pattern-modal" hidden>
+    <div class="asset-pattern-backdrop" data-close="asset-pattern"></div>
+    <div class="asset-pattern-dialog" role="dialog" aria-modal="true" aria-labelledby="assetPatternTitle">
+      <button id="assetPatternClose" class="asset-pattern-close" type="button" aria-label="关闭验证弹窗">×</button>
+      <p class="asset-pattern-kicker">安全验证</p>
+      <h3 id="assetPatternTitle">请绘制手势密码</h3>
+      <p id="assetPatternHint" class="asset-pattern-hint">首次查看资产前需要完成图案验证</p>
+      <div id="assetPatternLock" class="asset-pattern-lock" aria-label="图案密码输入区域"></div>
+    </div>
+  </div>
+  <script src="assets/vendor/gesture-lock/gesture-lock.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
