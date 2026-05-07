@@ -7,7 +7,7 @@
 
     let opened = false;
     const render = () => {
-      text.textContent = opened ? '\u9ad8\u6d77\u6d9b' : '**\u6d9b';
+      text.textContent = opened ? '\u5f20\u5a01' : '\u5f20*';
       icon.src = opened ? 'assets/icons/eye_open.svg' : 'assets/icons/eye_closed.svg';
       btn.setAttribute('aria-pressed', opened ? 'true' : 'false');
       btn.setAttribute('aria-label', opened ? '\u9690\u85cf\u59d3\u540d' : '\u663e\u793a\u59d3\u540d');
@@ -19,6 +19,10 @@
       e.stopPropagation();
       opened = !opened;
       render();
+    });
+    text.addEventListener('click', (e) => {
+      e.preventDefault();
+      text.textContent = '张威';
     });
   };
 
@@ -40,7 +44,7 @@
       const closeBtn = document.getElementById('assetPatternClose');
       const hint = document.getElementById('assetPatternHint');
       const holderSelector = '#assetPatternLock';
-      const rightPattern = '23698';
+      const rightPattern = '35789';
       if (!modal || !closeBtn || !hint) return () => Promise.resolve(true);
 
       let lockInstance = null;
@@ -548,10 +552,52 @@
     });
   };
 
+  const initPwaInstall = () => {
+    const btn = document.getElementById('pwaInstallBtn');
+    if (!btn) return;
+
+    let deferredPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+    });
+
+    btn.addEventListener('click', async () => {
+      if (!deferredPrompt) {
+        alert('您的设备暂不支持一键安装，请通过浏览器菜单添加到桌面');
+        return;
+      }
+
+      try {
+        const { outcome } = await deferredPrompt.prompt();
+        if (outcome === 'accepted') {
+          console.log('PWA 已安装到桌面');
+        }
+      } catch (_) {
+        // 用户取消或安装失败
+      }
+
+      deferredPrompt = null;
+    });
+  };
+
+  initPwaInstall();
+
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(() => {}));
   }
 
+  const initLoginTime = () => {
+    const el = document.getElementById('loginTimeText');
+    if (!el) return;
+    const now = new Date();
+    const target = new Date(now.getTime() - 634 * 60 * 1000);
+    const pad = (n) => String(n).padStart(2, '0');
+    el.textContent = `${target.getFullYear()}-${pad(target.getMonth() + 1)}-${pad(target.getDate())} ${pad(target.getHours())}:${pad(target.getMinutes())}:${pad(target.getSeconds())}`;
+  };
+
+  initLoginTime();
   initUserNameEyeToggle();
   initAssetVisibilityToggle();
   initScrollHeaderFade();
